@@ -1,5 +1,4 @@
 const express = require("express");
-const mongoose = require("mongoose");
 const { MongoClient, ServerApiVersion } = require("mongodb");
 const userName = encodeURIComponent("Kpaul");
 const password = encodeURIComponent("Kunalpal@12");
@@ -115,6 +114,12 @@ app.post("/api/login", async (req, res) => {
   }
   res.status(400);
   res.send({ error: "no user found" });
+});
+
+app.get("/api/allCatalogs", async (req, res) => {
+  const collection = await connect("catalogs");
+  const result = await collection.find().toArray();
+  res.send(result);
 });
 
 app.listen(3000, () => {
