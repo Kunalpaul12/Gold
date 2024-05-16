@@ -122,6 +122,30 @@ app.get("/api/allCatalogs", async (req, res) => {
   res.send(result);
 });
 
+app.get("/api/gender", async (req, res) => {
+  const collection = await connect("gender");
+  const result = await collection.find().toArray();
+  res.send(result);
+});
+
+app.get("/api/occupation", async (req, res) => {
+  const collection = await connect("occupation");
+  const result = await collection.find().toArray();
+  res.send(result);
+});
+
+app.get("/api/state", async (req, res) => {
+  const collection = await connect("state");
+  const result = await collection.find().toArray();
+  res.send(result);
+});
+
+app.get("/api/language", async (req, res) => {
+  const collection = await connect("language");
+  const result = await collection.find().toArray();
+  res.send(result);
+});
+
 app.listen(3000, () => {
   console.log("Server listening on port 3000");
 });
