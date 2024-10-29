@@ -146,6 +146,57 @@ app.get("/api/language", async (req, res) => {
   res.send(result);
 });
 
-app.listen(3000, () => {
+app.post("/api/addUserDetails", async (req, res) => {
+  setTimeout(async() => {
+    const collection = await connect("user_details");
+    const data = req.body;
+  
+    const errorValidate = (data) => {
+      const errorReason = (data) => {
+        if (!data.email) {
+          return "please provided a email";
+        } else if (!data.name) {
+          return "please provided a name";
+        } else if (!data.surname) {
+          return "please provided a surname";
+        } else if (!data.mobileNumber) {
+          return "please provided a mobile number";
+        }
+      };
+  
+      return errorReason(data);
+    };
+  
+    const isError = errorValidate(data);
+    if (isError) {
+      res.status(400);
+      res.send({ error: isError });
+      return;
+    }
+  
+    collection.deleteMany()
+  
+    collection.insertOne(data, (err, result) => {
+      if (err) {
+        console.log(err);
+        return;
+      }
+    })
+    .then((result) => {
+      res.send({ success: "entry create successfully",id: result.insertedId});
+    });
+  }, 2000)
+ 
+});
+
+
+app.get("/api/getUserDetails", async (req, res) => {
+  setTimeout( async() => {  const collection = await connect("user_details");
+    const result = await collection.find().toArray();
+    res.send(result);},2000)
+
+});
+
+app.listen(8080, () => {
   console.log("Server listening on port 3000");
 });
